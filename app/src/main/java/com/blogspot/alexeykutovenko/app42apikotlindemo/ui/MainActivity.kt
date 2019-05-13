@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity(), App42HelperService.App42StorageService
         json.put("age",30)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
