@@ -7,7 +7,6 @@ import com.blogspot.alexeykutovenko.app42apikotlindemo.config.app42ApiKey
 import com.blogspot.alexeykutovenko.app42apikotlindemo.config.app42SecretKey
 import com.blogspot.alexeykutovenko.app42apikotlindemo.data.App42HelperService
 import com.shephertz.app42.paas.sdk.android.App42API
-import com.shephertz.app42.paas.sdk.android.storage.QueryBuilder
 import com.shephertz.app42.paas.sdk.android.storage.Storage
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
@@ -27,13 +26,12 @@ class MainActivity : AppCompatActivity(), App42HelperService.App42StorageService
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        App42API.initialize(this, app42ApiKey, app42SecretKey);
+        App42API.initialize(this, app42ApiKey, app42SecretKey)
         val app42service = App42HelperService.newInstance(this)
 
         btnFindById.setOnClickListener { app42service.findDocByDocId(id) }
         btnFindByKeyValue.setOnClickListener { app42service.findDocByKeyValue(key, value) }
         btnInsert.setOnClickListener { app42service.insertJSONDoc(json) }
-        btnDelete.setOnClickListener { QueryBuilder.Operator.AND }
     }
 
     override fun onSuccess(response: Storage) {
