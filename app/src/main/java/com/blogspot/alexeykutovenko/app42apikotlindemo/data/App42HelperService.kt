@@ -3,6 +3,8 @@ package com.blogspot.alexeykutovenko.app42apikotlindemo.data
 import com.blogspot.alexeykutovenko.app42apikotlindemo.config.app42CollectionName
 import com.blogspot.alexeykutovenko.app42apikotlindemo.config.app42DBName
 import com.shephertz.app42.paas.sdk.android.App42API
+import com.shephertz.app42.paas.sdk.android.App42Exception
+import com.shephertz.app42.paas.sdk.android.App42Response
 import com.shephertz.app42.paas.sdk.android.storage.QueryBuilder
 import com.shephertz.app42.paas.sdk.android.storage.Storage
 import com.shephertz.app42.paas.sdk.android.storage.StorageService
@@ -20,6 +22,7 @@ class App42HelperService (private val callback: App42StorageServiceListener): Qu
     interface App42StorageServiceListener {
         fun onSuccess(response: Storage)
         fun onException(ex: Throwable)
+        fun onDelete(response: App42Response)
     }
 
     /*
@@ -52,6 +55,23 @@ class App42HelperService (private val callback: App42StorageServiceListener): Qu
         value: String,
         newJsonDoc: JSONObject
     ) = processApp42StorageQuery { storageService.updateDocumentByKeyValue(app42DBName, app42CollectionName, key, value, newJsonDoc) }
+
+
+    /*
+    This function deletes JSON Document by id.
+     */
+    fun deleteDocById(docId: String) = CoroutineScope(Dispatchers.IO).launch {
+        val response: Deferred<App42Response> = async {
+            storageService.deleteDocumentById(app42DBName, app42CollectionName, docId)
+        }
+        withContext(Dispatchers.Main) {
+            try {
+                callback.onDelete(response.await())
+            } catch (ex: App42Exception) {
+                callback.onException(ex)
+            }
+        }
+    }
 
 
     /*

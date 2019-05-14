@@ -7,6 +7,7 @@ import com.blogspot.alexeykutovenko.app42apikotlindemo.config.app42ApiKey
 import com.blogspot.alexeykutovenko.app42apikotlindemo.config.app42SecretKey
 import com.blogspot.alexeykutovenko.app42apikotlindemo.data.App42HelperService
 import com.shephertz.app42.paas.sdk.android.App42API
+import com.shephertz.app42.paas.sdk.android.App42Response
 import com.shephertz.app42.paas.sdk.android.storage.Storage
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
@@ -41,5 +42,9 @@ class MainActivity : AppCompatActivity(), App42HelperService.App42StorageService
 
     override fun onException(ex: Throwable) {
         message.text = "${ex.message}"
+    }
+
+    override fun onDelete(response: App42Response) {
+        message.text = "${response.isResponseSuccess}"
     }
 }
